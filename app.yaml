@@ -1,0 +1,10 @@
+application: bovdatafetcher
+version: 1
+runtime: python
+api_version: 1
+
+handlers:
+- url: /fetch
+  script: fetch_company_data.py
+- url: .*
+  script: main.py
