@@ -22,7 +22,7 @@ class Company(db.Model):
    def __str__(self):
       return "<Quote code: %s, cur: %.2f, low: %.2f, high: %.2f, vol: %.2f>" % (repr(self.code), self.price, self.low, self.high, self.vol)
       
-class WatchedQuote(db.Model):
+class WatchedCompany(db.Model):
    company = db.ReferenceProperty(Company)
    updatedByUser = dbUserProprety(auto_current_user_add = True)
 

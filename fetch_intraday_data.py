@@ -29,15 +29,18 @@ def geturl(url):
     return content
 
 def main():
-    
-    idt = company.idt
-    idtstr = geturl(WS_URL % idt)
-    idtjson = simplejson.loads(idtstr)
-    for quote in idtjson['data']:
-        c = Company()
-        for att in quote:
-            c.__setattr__(att, comp[att])
-        comp.put()
+    companies = db.GqlQuery("SELECT * FROM WatchedQuote ORDER BY code")
+    for company in companies:
+       idt = company.idt
+       data = geturl(WS_URL % idt)
+       idtjson = simplejson.loads(data)
+       for quote in idtjson['data']:
+           q = Quote()
+           q.company = company
+           for att in quote:
+               q.__setattr__(att, quote[att])
+           q.put()
         
 if (__name__=='__main__'):
     main()
+
