@@ -9,7 +9,7 @@ class Company(db.Model):
 
     def __str__(self):
         return "<Company code: %s, idt: %s, name: %s>" % (repr(self.code), repr(self.idt), repr(self.name))
-        class Stock(db.Model):
+        class Quote(db.Model):
    company = db.ReferenceProperty(Company)
    date = db.DateTimeProperty()
    price = db.FloatProperty()
@@ -20,4 +20,9 @@ class Company(db.Model):
    vol = db.FloatProperty()
    
    def __str__(self):
-      return "<Stock code: " % ()
+      return "<Quote code: %s, cur: %.2f, low: %.2f, high: %.2f, vol: %.2f>" % (repr(self.code), self.price, self.low, self.high, self.vol)
+      
+class WatchedQuote(db.Model):
+   company = db.ReferenceProperty(Company)
+   updatedByUser = dbUserProprety(auto_current_user_add = True)
+

@@ -1,3 +1,8 @@
+from urllib import urlopen
+import re
+from django.utils import simplejson
+from models import Company
+
 
 ERRORS= {   "FSW-0001":"Este período não é válido.",
             "FSW-0002":"Este período não é válido; insira uma data inicial menor que a data final.",
@@ -15,3 +20,24 @@ ERRORS= {   "FSW-0001":"Este período não é válido.",
         }
 
 WS_URL = 'http://cotacoes.economia.uol.com.br/ws/asset/%s/intraday?size=500&page=1'
+
+
+def geturl(url):
+    print 'looking url ' + (url)
+    content = urlopen(url).read()
+    print 'load successful'
+    return content
+
+def main():
+    
+    idt = company.idt
+    idtstr = geturl(WS_URL % idt)
+    idtjson = simplejson.loads(idtstr)
+    for quote in idtjson['data']:
+        c = Company()
+        for att in quote:
+            c.__setattr__(att, comp[att])
+        comp.put()
+        
+if (__name__=='__main__'):
+    main()
