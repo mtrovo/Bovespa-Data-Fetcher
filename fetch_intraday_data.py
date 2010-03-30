@@ -1,4 +1,4 @@
-﻿from urllib import urlopen
+from urllib import urlopen
 import re
 from django.utils import simplejson
 from models import Company
@@ -48,3 +48,4 @@ def main():
 
 if (__name__=='__main__'):
     main()
+
