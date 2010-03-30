@@ -1,4 +1,4 @@
-from urllib import urlopen
+﻿from urllib import urlopen
 import re
 from django.utils import simplejson
 from models import Company
@@ -18,7 +18,8 @@ def main():
         c = Company()
         for att in comp:
             c.__setattr__(att, comp[att])
-        comp.put()
+        c.put()
+        print str(c)
         
 if (__name__=='__main__'):
     main()

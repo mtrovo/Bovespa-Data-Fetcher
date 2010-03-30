@@ -1,20 +1,20 @@
-from urllib import urlopen
+Ôªøfrom urllib import urlopen
 import re
 from django.utils import simplejson
 from models import Company
 
 
-ERRORS= {   "FSW-0001":"Este perÌodo n„o È v·lido.",
-            "FSW-0002":"Este perÌodo n„o È v·lido; insira uma data inicial menor que a data final.",
-            "FSW-0003":"A data inicial n„o È v·lida; insira uma data menor que a data de hoje.",
-            "FSW-0004":"A data final n„o È v·lida; insira uma data menor ou igual a data atual.",
-            "FSW-0101":"Par‚metro size menor que 1","FSW-0102":"Par‚metro page menor que 1",
-            "FSW-0103":"Par‚metro fields inv·lido","FSW-0104":"Par‚metro idt menor que 1",
-            "FSW-0201":"Par‚metro inv·lido",
-            "FSW-0202":"Campo IDT inv·lido",
-            "FSW-0401":"N„o h· informaÁ„o disponÌvel para esta aÁ„o/Ìndice.",
-            "FSW-0402":"Campo target inv·lido",
-            "FSW-0404":"URL n„o encontrada",
+ERRORS= {   "FSW-0001":"Este per√≠odo n√£o √© v√°lido.",
+            "FSW-0002":"Este per√≠odo n√£o √© v√°lido; insira uma data inicial menor que a data final.",
+            "FSW-0003":"A data inicial n√£o √© v√°lida; insira uma data menor que a data de hoje.",
+            "FSW-0004":"A data final n√£o √© v√°lida; insira uma data menor ou igual a data atual.",
+            "FSW-0101":"Par√¢metro size menor que 1","FSW-0102":"Par√¢metro page menor que 1",
+            "FSW-0103":"Par√¢metro fields inv√°lido","FSW-0104":"Par√¢metro idt menor que 1",
+            "FSW-0201":"Par√¢metro inv√°lido",
+            "FSW-0202":"Campo IDT inv√°lido",
+            "FSW-0401":"N√£o h√° informa√ß√£o dispon√≠vel para esta a√ß√£o/√≠ndice.",
+            "FSW-0402":"Campo target inv√°lido",
+            "FSW-0404":"URL n√£o encontrada",
             "FSW-0500":"Internal Server Error",
             "FSW-0400":"Bad Request"
         }
@@ -30,14 +30,21 @@ def geturl(url):
 
 def main():
     
-    idt = company.idt
-    idtstr = geturl(WS_URL % idt)
-    idtjson = simplejson.loads(idtstr)
-    for quote in idtjson['data']:
-        c = Company()
-        for att in quote:
-            c.__setattr__(att, comp[att])
-        comp.put()
-        
+   companies = db.GqlQuery("SELECT * FROM WatchedQuote ORDER BY code")
+   for company in companies:
+      idt = company.idt
+      data = geturl(WS_URL % idt)
+      idtjson = simplejson.loads(data)
+      err = idtjson['error']
+      if err:
+         logging.error('Unable to fetch data for campany %s: %s: %s' % (company.code, err, ERRORS[err]))
+      else: 
+         for quote in idtjson['data']:
+            q = Quote()
+            q.company = company
+            for att in quote:
+               q.__setattr__(att, quote[att])
+               q.put()
+
 if (__name__=='__main__'):
     main()

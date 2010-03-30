@@ -4,7 +4,9 @@ runtime: python
 api_version: 1
 
 handlers:
-- url: /fetch
+- url: /fetch_intraday
+  script: fetch_intraday_data.py
+- url: /fetch_company
   script: fetch_company_data.py
 - url: .*
   script: main.py
