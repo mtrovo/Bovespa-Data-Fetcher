@@ -1,7 +1,8 @@
-from urllib import urlopen
+﻿from urllib import urlopen
 import re
 from django.utils import simplejson
 from models import Company
+from google.appengine.ext import db
 
 
 ERRORS= {   "FSW-0001":"Este período não é válido.",
@@ -30,8 +31,9 @@ def geturl(url):
 
 def main():
     
-   companies = db.GqlQuery("SELECT * FROM WatchedQuote ORDER BY code")
-   for company in companies:
+   wcompanies = models.WatchedCompany.gql("ORDER BY company")
+   for wc in wcompanies:
+      company = wc.company
       idt = company.idt
       data = geturl(WS_URL % idt)
       idtjson = simplejson.loads(data)

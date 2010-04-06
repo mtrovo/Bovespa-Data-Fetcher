@@ -1,4 +1,4 @@
-from google.appengine.ext import db
+﻿from google.appengine.ext import db
 
 class Company(db.Model):
     companyAbvName = db.StringProperty()
@@ -9,7 +9,8 @@ class Company(db.Model):
 
     def __str__(self):
         return "<Company code: %s, idt: %s, name: %s>" % (repr(self.code), repr(self.idt), repr(self.name))
-        class Quote(db.Model):
+        
+class Quote(db.Model):
    company = db.ReferenceProperty(Company)
    date = db.DateTimeProperty()
    price = db.FloatProperty()

@@ -18,18 +18,41 @@
 
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
+from google.appengine.ext.webapp import template
+from google.appengine.ext import db
 
+import models
+
+import logging
 
 class MainHandler(webapp.RequestHandler):
-
   def get(self):
-    self.response.out.write('Hello world!')
+    self.response.out.write('RONALDO!')
 
+
+class WatchedCompaniesHandler(webapp.RequestHandler):
+  def get(self):
+    data = {}
+    data['watched'] = db.GqlQuery("SELECT * from WatchedCompany ORDER BY company").fetch(100 )
+    data['companies'] = db.GqlQuery("SELECT * from Company ORDER BY code")\
+    .fetch(100)
+
+    self.response.out.write(template.render('templates/watched.html', data))
+  
+  def post(self):
+    sels = self.request.get_all('selected')
+    self.response.out.write(sels)
+#    self.response.out.write(repr(self.request.POST))
 
 def main():
-  application = webapp.WSGIApplication([('/', MainHandler)],
+  mappings = []
+  mappings.append(('/', MainHandler))
+  mappings.append(('/watched', WatchedCompaniesHandler))
+  logging.info(repr(mappings))
+  application = webapp.WSGIApplication(mappings,
                                        debug=True)
   util.run_wsgi_app(application)
+
 
 
 if __name__ == '__main__':

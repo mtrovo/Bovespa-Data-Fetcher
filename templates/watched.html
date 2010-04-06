@@ -1,0 +1,48 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <title>Watched Companies</title>
+  <link rel="stylesheet" href="css/main.css" type="text/css" media="screen" title="main stylesheet" charset="utf-8" />
+</head>
+<body>
+  <div id="container">
+    <form action="watched" method="post">
+      <h2>Watched Companies</h2>
+<table border="0" cellspacing="0" cellpadding="0">
+        <tr>
+        <th><input type="checkbox" name="checkall" value="" id="checkall" /></th>
+        <th>Code</th>
+        <th >Description</th>
+</tr>
+{% for w in watched %}
+<tr>
+<td><input type="checkbox" name="selected" value="{{w.company.code}}" /></td>
+<td>{{w.company.code}}</td>
+<td>{{w.company.name}}</td>
+</tr>
+{%endfor%}
+      </table>
+      <p><input type="submit" value="Remove" /></p>
+    
+      <h2>Companies</h2>
+      <table border="0" cellspacing="0" cellpadding="0">
+        <tr>
+        <th><input type="checkbox" name="checkall" value="" id="checkall" /></th>
+        <th>Code</th>
+        <th >Description</th>
+</tr>
+{% for company in companies %}
+<tr>
+<td><input type="checkbox" name="selected" value="{{company.code}}" /></td>
+<td>{{company.code}}</td>
+<td>{{company.name}}</td>
+</tr>
+{%endfor%}
+      </table>
+      <p><input type="submit" value="Add" /></p>
+    </form>
+  </div>
+</body>
+</html>

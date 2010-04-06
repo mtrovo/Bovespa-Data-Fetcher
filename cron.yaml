@@ -1,0 +1,8 @@
+cron:
+- description: Job for fetching Companies
+  url: /fetch_company
+  schedule: 1st sunday 01:00
+- description: Job for fetching a minute basis stock prices for the hole day
+  url: /fetch_intraday
+  schedule: every day 23:00
+  timezone: america/sao_paulo
